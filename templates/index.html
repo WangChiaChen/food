@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <title>YOLO 食物偵測系統</title>
+    <style>
+        body {
+            font-family: "Microsoft JhengHei", sans-serif;
+            margin: 40px;
+            background-color: #f9f9f9;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        img {
+            border: 1px solid #ccc;
+            margin-bottom: 20px;
+            max-width: 100%;
+        }
+        ul {
+            list-style-type: square;
+            padding-left: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+        }
+        .upload-section {
+            margin-bottom: 30px;
+        }
+        .button {
+            margin-top: 10px;
+            padding: 8px 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .button:hover {
+            background-color: #45a049;
+        }
+        .result-block {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            padding: 20px;
+            margin-top: 30px;
+            border-radius: 6px;
+        }
+        .no-result {
+            color: #999;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>YOLO 食物偵測系統</h1>
+        <div class="upload-section">
+            <form method="post" action="/predict" enctype="multipart/form-data">
+                <input type="file" name="image" accept="image/*" required>
+                <button type="submit" class="button">開始偵測</button>
+            </form>
+        </div>
+
+        {% if uploaded_image %}
+        <div class="result-block">
+            <h2>原始圖片：</h2>
+            <img src="{{ uploaded_image }}" alt="原始圖片">
+
+            <h2>偵測結果圖片：</h2>
+            <img src="{{ result_image }}" alt="偵測結果">
+
+            <h2>辨識到的食物：</h2>
+            {% if detected_chinese %}
+                <ul>
+                {% for item in detected_chinese %}
+                    <li>{{ item }}</li>
+                {% endfor %}
+                </ul>
+            {% else %}
+                <p class="no-result">未偵測到食物</p>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
